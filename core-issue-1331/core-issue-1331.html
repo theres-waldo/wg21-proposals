@@ -27,8 +27,8 @@
 </style>
 </head><body>
 <address style="text-align: left;">
-Document number: P0641R0<br/>
-Date: 2017-04-17<br/>
+Document number: D0641R1<br/>
+Date: 2017-07-14<br/>
 Project: Programming Language C++<br/>
 Audience: Evolution Working Group<br/>
 Reply-to: <a href="mailto:daniel.kruegler@gmail.com">Daniel Kr&uuml;gler</a>, <a href="mailto:botond@mozilla.com">Botond Ballo</a>
@@ -37,11 +37,19 @@ Reply-to: <a href="mailto:daniel.kruegler@gmail.com">Daniel Kr&uuml;gler</a>, <a
 <h1 style="text-align: center;">Resolving Core Issue #1331 (<code>const</code> mismatch with defaulted copy constructor)</h1>
 
 <ul>
+<li><a href="#Revision_history">Revision History</a></li>
 <li><a href="#Motivation">Motivation</a></li>
 <li><a href="#Analysis">Analysis</a></li>
 <li><a href="#Proposed_resolution">Proposed Resolution</a></li>
 <li><a href="#Proposed_wording">Proposed Wording</a></li>
 <li><a href="#Issues_resolved">Issues Resolved</a></li>
+</ul>
+
+<h2><a name="Revision_history"></a>Revision History</h2>
+<p>Changes since P0641R0:</p>
+<ul>
+  <li>Updated proposed wording to address comments from CWG review.</li>
+  <li>Fixed outdated section numbers and typos.</li>
 </ul>
 
 <h2><a name="Motivation"></a>Motivation</h2>
@@ -73,7 +81,7 @@ long as one does not try to copy it.</p>
 
 <h2><a name="Analysis"></a>Analysis</h2>
 
-The relevant standard wording can be found in 8.4.2 [dcl.fct.def.deault] paragraph 1 (emphasis ours):
+The relevant standard wording can be found in 11.4.2 [dcl.fct.def.default] paragraph 1 (emphasis ours):
 
 <blockquote class="std">
   <ol>
@@ -91,8 +99,8 @@ The relevant standard wording can be found in 8.4.2 [dcl.fct.def.deault] paragra
 </blockquote>
 
 <p>In the case of <code>Wrapper&lt;MyType&gt;</code>, the implicitly declared copy constructor would have the parameter type
-<code>MyType&amp;</code> per 12.8.1 [class.copy.ctor] paragraph 7, so an explicitly defaulted copy constructor with the
-parameter type <code>const MyType&amp;</code> is ill-formed.</p>
+<code>Wrapper&lt;MyType&gt;&amp;</code> per 15.8.1 [class.copy.ctor] paragraph 7, so an explicitly defaulted copy constructor with the
+parameter type <code>const Wrapper&lt;MyType&gt;&amp;</code> is ill-formed.</p>
 
 <h2><a name="Proposed_resolution"></a>Proposed Resolution</h2>
 
@@ -100,6 +108,8 @@ parameter type <code>const MyType&amp;</code> is ill-formed.</p>
 implicitly declared, then it be defined as deleted, rather than being ill-formed.</p>
 
 <h2><a name="Proposed_wording"></a>Proposed Wording</h2>
+
+Change 11.4.2 [dcl.fct.def.default] as indicated:
 
 <blockquote class="std">
   <ol>
@@ -113,10 +123,30 @@ implicitly declared, then it be defined as deleted, rather than being ill-formed
         <li>not have default arguments.</li>
       </ul>
     </li>
-    <li><ins>If an explicitly defaulted function does not have the same declared function type (except for possibly 
-             differing ref-qualifiers and except that in the case of a copy constructor or copy assignment operator, 
-             the parameter type may be "reference to non-const T", where T is the name of the member function's class) 
-             as if it had been implicitly declared, it is defined as deleted.</ins></li>
+    <li><ins>The type of an explicitly defaulted function is allowed to differ from the type it would have if it were
+         implicitly declared in the following ways:</ins>
+       <ul>
+          <li><ins>it may have differing ref-qualifiers; and</ins></li>
+          <li><ins>in the case of a copy constructor or copy assignment operator, the parameter type may be "reference 
+              to non-const T", where T is the name of the member function's class.</ins></li>
+       </ul>
+        <ins>If the type differs in any other way, then</ins>
+       <ul>
+        <li><ins>if the function is explicitly defaulted on its first declaration, it is defined as deleted;</ins></li>
+        <li><ins>otherwise, the program is ill-formed.</ins></li>
+       </ul>
+    </li>
+    <li>An explicitly-defaulted function that is not defined as deleted may be declared <code>constexpr</code> only if 
+        it would have been implicitly declared as <code>constexpr</code>. If a function is explicitly defaulted on its 
+        first declaration, it is implicitly considered to be <code>constexpr</code> if the implicit declaration would be.
+    </li>
+    <li><del>If a function that is explicitly defaulted is declared with a <em>noexcept-specifier</em> that does not 
+        produce the same exception specification as the implicit declaration ([except.spec]), then</del>
+      <ul>
+        <li><del>if the function is explicitly defaulted on its first declaration, it is defined as deleted;</del></li>
+        <li><del>otherwise, the program is ill-formed.</del></li>
+      </ul>
+    </li>
   </ol>
 </blockquote>
 

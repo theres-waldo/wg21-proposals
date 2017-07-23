@@ -115,7 +115,7 @@ Change 11.4.2 [dcl.fct.def.default] as indicated:
   <ol>
     <li>[...] A function that is explicitly defaulted shall:
       <ul>
-        <li>be a special member function,</li>
+        <li>be a special member function,<ins> and</ins></li>
         <li><del>have the same declared function type (except for possibly differing ref-qualifiers and except that in
             the case of a copy constructor or copy assignment operator, the parameter type may be "reference to
             non-const T", where T is the name of the member function's class) as if it had been implicitly declared,
@@ -124,7 +124,7 @@ Change 11.4.2 [dcl.fct.def.default] as indicated:
       </ul>
     </li>
     <li><ins>The type of an explicitly defaulted function is allowed to differ from the type it would have if it were
-         implicitly declared in the following ways:</ins>
+         implicitly declared, as follows:</ins>
        <ul>
           <li><ins>it may have differing ref-qualifiers; and</ins></li>
           <li><ins>in the case of a copy constructor or copy assignment operator, the parameter type may be "reference 

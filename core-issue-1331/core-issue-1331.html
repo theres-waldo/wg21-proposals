@@ -28,7 +28,7 @@
 </head><body>
 <address style="text-align: left;">
 Document number: D0641R1<br/>
-Date: 2017-07-14<br/>
+Date: 2017-07-24<br/>
 Project: Programming Language C++<br/>
 Audience: Evolution Working Group<br/>
 Reply-to: <a href="mailto:daniel.kruegler@gmail.com">Daniel Kr&uuml;gler</a>, <a href="mailto:botond@mozilla.com">Botond Ballo</a>
@@ -109,7 +109,7 @@ implicitly declared, then it be defined as deleted, rather than being ill-formed
 
 <h2><a name="Proposed_wording"></a>Proposed Wording</h2>
 
-Change 11.4.2 [dcl.fct.def.default] as indicated:
+Change 11.4.2 [dcl.fct.def.default] paragraph 1 as indicated:
 
 <blockquote class="std">
   <ol>
@@ -123,23 +123,30 @@ Change 11.4.2 [dcl.fct.def.default] as indicated:
         <li>not have default arguments.</li>
       </ul>
     </li>
-    <li><ins>The type of an explicitly defaulted function is allowed to differ from the type it would have if it were
+  </ol>
+</blockquote>
+
+Add a new paragraph below 11.4.2 [dcl.fct.def.default] paragraph 1:
+
+<blockquote class="std">
+    <ins>The type of an explicitly defaulted function is allowed to differ from the type it would have if it were
          implicitly declared, as follows:</ins>
        <ul>
           <li><ins>it may have differing ref-qualifiers; and</ins></li>
           <li><ins>in the case of a copy constructor or copy assignment operator, the parameter type may be "reference 
               to non-const T", where T is the name of the member function's class.</ins></li>
        </ul>
-        <ins>If the type differs in any other way, then</ins>
+        <ins>If the type differs in any other way, then:</ins>
        <ul>
         <li><ins>if the function is explicitly defaulted on its first declaration, it is defined as deleted;</ins></li>
         <li><ins>otherwise, the program is ill-formed.</ins></li>
        </ul>
-    </li>
-    <li>An explicitly-defaulted function that is not defined as deleted may be declared <code>constexpr</code> only if 
-        it would have been implicitly declared as <code>constexpr</code>. If a function is explicitly defaulted on its 
-        first declaration, it is implicitly considered to be <code>constexpr</code> if the implicit declaration would be.
-    </li>
+</blockquote>
+
+Delete 11.4.2 [dcl.fct.def.default] paragraph 3:
+
+<blockquote class="std">
+  <ol start="3">
     <li><del>If a function that is explicitly defaulted is declared with a <em>noexcept-specifier</em> that does not 
         produce the same exception specification as the implicit declaration ([except.spec]), then</del>
       <ul>

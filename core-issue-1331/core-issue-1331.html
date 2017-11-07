@@ -28,7 +28,7 @@
 </head><body>
 <address style="text-align: left;">
 Document number: D0641R2<br/>
-Date: 2017-11-06<br/>
+Date: 2017-11-07<br/>
 Project: Programming Language C++<br/>
 Audience: Evolution Working Group<br/>
 Reply-to: <a href="mailto:daniel.kruegler@gmail.com">Daniel Kr&uuml;gler</a>, <a href="mailto:botond@mozilla.com">Botond Ballo</a>
@@ -150,7 +150,7 @@ Add a new paragraph below 11.4.2 [dcl.fct.def.default] paragraph 1:
         <ins>If the type differs in any other way, then:</ins>
        <ul>
         <li><ins>if the function is an assignment operator and its return type differs, the program is ill-formed;</ins></li>
-        <li><ins>if the function is an assignment operator and its parameter type is not a reference, the program is ill-formed;</ins></li>
+        <li><ins>otherwise, if the function is an assignment operator and its parameter type is not a reference, the program is ill-formed;</ins></li>
         <li><ins>otherwise, if the function is explicitly defaulted on its first declaration, it is defined as deleted;</ins></li>
         <li><ins>otherwise, the program is ill-formed.</ins></li>
        </ul>

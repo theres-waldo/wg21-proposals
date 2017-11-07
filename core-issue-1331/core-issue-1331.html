@@ -27,8 +27,8 @@
 </style>
 </head><body>
 <address style="text-align: left;">
-Document number: P0641R1<br/>
-Date: 2017-07-24<br/>
+Document number: D0641R2<br/>
+Date: 2017-11-06<br/>
 Project: Programming Language C++<br/>
 Audience: Evolution Working Group<br/>
 Reply-to: <a href="mailto:daniel.kruegler@gmail.com">Daniel Kr&uuml;gler</a>, <a href="mailto:botond@mozilla.com">Botond Ballo</a>
@@ -46,6 +46,15 @@ Reply-to: <a href="mailto:daniel.kruegler@gmail.com">Daniel Kr&uuml;gler</a>, <a
 </ul>
 
 <h2><a name="Revision_history"></a>Revision History</h2>
+<p>Changes since P0641R1:</p>
+<ul>
+  <li>Added exceptions for two cases in which we want a defaulted definition to remain ill-formed:
+    <ul>
+      <li>an assignment operator with a mismatched return type, and</li>
+      <li>an assignment operator with a parameter type that's not a reference.</li>
+    </ul>
+  </li>
+</ul>
 <p>Changes since P0641R0:</p>
 <ul>
   <li>Updated proposed wording to address comments from CWG review.</li>
@@ -105,7 +114,9 @@ parameter type <code>const Wrapper&lt;MyType&gt;&amp;</code> is ill-formed.</p>
 <h2><a name="Proposed_resolution"></a>Proposed Resolution</h2>
 
 <p>This proposal suggests that if the declared type of an explicitly defaulted function is not the same as if it had been
-implicitly declared, then it be defined as deleted, rather than being ill-formed.</p>
+implicitly declared, then it be defined as deleted, rather than being ill-formed. Exceptions are made for two cases where
+it's desirable for a defaulted definition to remain ill-formed: an assignment operator with a mismatched return type,
+and an assignment operator with a parameter type that's not a reference.</p>
 
 <h2><a name="Proposed_wording"></a>Proposed Wording</h2>
 
@@ -138,7 +149,9 @@ Add a new paragraph below 11.4.2 [dcl.fct.def.default] paragraph 1:
        </ul>
         <ins>If the type differs in any other way, then:</ins>
        <ul>
-        <li><ins>if the function is explicitly defaulted on its first declaration, it is defined as deleted;</ins></li>
+        <li><ins>if the function is an assignment operator and its return type differs, the program is ill-formed;</ins></li>
+        <li><ins>if the function is an assignment operator and its parameter type is not a reference, the program is ill-formed;</ins></li>
+        <li><ins>otherwise, if the function is explicitly defaulted on its first declaration, it is defined as deleted;</ins></li>
         <li><ins>otherwise, the program is ill-formed.</ins></li>
        </ul>
 </blockquote>
